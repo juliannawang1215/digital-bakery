@@ -1,0 +1,178 @@
+/* About Card — True Physics Unfold (modal backdrop + paper) */
+
+.about-card-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-sizing: border-box;
+  overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.about-card-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.about-card-backdrop .paper-wrapper-3d {
+  width: 100%;
+  max-width: 600px;
+  perspective: 2500px;
+  position: relative;
+}
+
+.about-card-backdrop .paper-card {
+  position: relative;
+  width: 100%;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 625 750' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='torn' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='3' result='noise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='4.5' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3CradialGradient id='vintage' cx='50%25' cy='50%25' r='75%25'%3E%3Cstop offset='40%25' stop-color='%23F4EFE7'/%3E%3Cstop offset='100%25' stop-color='%23E3D2BE'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg filter='url(%23torn)'%3E%3Cpath d='M 30,25 L 600,28 L 595,730 L 25,720 L 15,60 Z' fill='url(%23vintage)'/%3E%3Cpath d='M 30,25 L 600,28 L 595,730 L 25,720 L 15,60 Z' fill='black' filter='url(%23noise)' opacity='0.04'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0px 25px 35px rgba(0, 0, 0, 0.12)) drop-shadow(0px 5px 12px rgba(0, 0, 0, 0.05));
+  padding: 65px 55px;
+  box-sizing: border-box;
+}
+
+.about-card-backdrop .fold-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  animation: about-card-float-in 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.about-card-backdrop .fold-part {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.about-card-backdrop .fold-front {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  transform: translateZ(1px);
+}
+.about-card-backdrop .fold-back {
+  position: absolute;
+  left: 0;
+  right: 0;
+  backface-visibility: hidden;
+  background: #DCC7B4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.05);
+  transform: translateZ(-1px) rotateX(180deg);
+}
+.about-card-backdrop .fold-top .fold-back { top: 2%; height: 32%; border-radius: 8px 8px 0 0; }
+.about-card-backdrop .fold-bot .fold-back { bottom: 2%; height: 32%; border-radius: 0 0 8px 8px; }
+
+.about-card-backdrop .fold-mid { transform: translateZ(0); }
+.about-card-backdrop .fold-bot {
+  transform-origin: center 66.666%;
+  transform: translateZ(2px) rotateX(179.5deg);
+  animation: about-card-unfold-bot 0.9s cubic-bezier(0.4, 1.1, 0.4, 1) 0.5s forwards;
+}
+.about-card-backdrop .fold-bot .fold-front { filter: brightness(0.4); animation: about-card-brighten 0.9s cubic-bezier(0.4, 1.1, 0.4, 1) 0.5s forwards; }
+.about-card-backdrop .fold-bot .fold-back { box-shadow: 0 -20px 40px rgba(0,0,0,0.15); animation: about-card-shadow-fade 0.9s 0.5s forwards; }
+
+.about-card-backdrop .fold-top {
+  transform-origin: center 33.333%;
+  transform: translateZ(4px) rotateX(-179.5deg);
+  animation: about-card-unfold-top 0.9s cubic-bezier(0.4, 1.1, 0.4, 1) 0.85s forwards;
+}
+.about-card-backdrop .fold-top .fold-front { filter: brightness(0.4); animation: about-card-brighten 0.9s cubic-bezier(0.4, 1.1, 0.4, 1) 0.85s forwards; }
+.about-card-backdrop .fold-top .fold-back { box-shadow: 0 30px 50px rgba(0,0,0,0.25); animation: about-card-shadow-fade 0.9s 0.85s forwards; }
+
+@keyframes about-card-float-in {
+  0% { transform: scale(0.65) translateY(40vh) rotateX(55deg) rotateZ(-12deg); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: scale(1) translateY(0) rotateX(0deg) rotateZ(0deg); opacity: 1; }
+}
+@keyframes about-card-unfold-bot {
+  0% { transform: translateZ(2px) rotateX(179.5deg); }
+  100% { transform: translateZ(2px) rotateX(0deg); }
+}
+@keyframes about-card-unfold-top {
+  0% { transform: translateZ(4px) rotateX(-179.5deg); }
+  100% { transform: translateZ(4px) rotateX(0deg); }
+}
+@keyframes about-card-brighten { 0% { filter: brightness(0.3); } 100% { filter: brightness(1); } }
+@keyframes about-card-shadow-fade { 0% { box-shadow: 0 30px 50px rgba(0,0,0,0.25); } 100% { box-shadow: 0 0px 0px rgba(0,0,0,0); } }
+
+.about-card-backdrop .crease-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.06) 20%, rgba(0,0,0,0.06) 80%, transparent);
+  opacity: 0;
+}
+.about-card-backdrop .crease-line-top { top: 33.333%; animation: about-card-crease 2s 1s forwards; }
+.about-card-backdrop .crease-line-bot { top: 66.666%; animation: about-card-crease 2s 0.65s forwards; }
+@keyframes about-card-crease { 0% { opacity: 0; } 10% { opacity: 1; } 100% { opacity: 0; } }
+
+.about-card-backdrop .fold-scene .pen-stroke,
+.about-card-backdrop .fold-scene .smile-mouth,
+.about-card-backdrop .fold-scene .smile-eye,
+.about-card-backdrop .fold-scene text { opacity: 0 !important; animation: none !important; }
+
+.about-card-backdrop .content-wrapper { position: relative; mix-blend-mode: multiply; opacity: 0.85; }
+.about-card-backdrop .content-wrapper p {
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  color: #1A1A1A;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: left;
+}
+.about-card-backdrop .content-wrapper p:last-of-type { margin-bottom: 0; }
+
+.about-card-backdrop .close-btn {
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.about-card-backdrop .close-btn path { stroke: #1A1A1A; stroke-linecap: round; }
+
+.about-card-backdrop .card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 35px;
+}
+.about-card-backdrop .links { display: flex; gap: 20px; position: relative; z-index: 10; margin-bottom: 15px; }
+.about-card-backdrop .links a { font-family: 'Courier Prime', monospace; color: #1A1A1A; text-decoration: none; font-size: 14px; }
+.about-card-backdrop .links a:hover { text-decoration: underline; }
+
+.about-card-backdrop .signature-area { position: relative; display: flex; align-items: center; pointer-events: none; }
+.about-card-backdrop .signature-svg { width: 280px; height: 140px; transform: rotate(-3deg); margin-left: -15px; margin-top: -20px; margin-bottom: -35px; }
+.about-card-backdrop .pen-stroke { stroke-dasharray: 500; stroke-dashoffset: 500; }
+.about-card-backdrop .paper-card.start-anim .pen-stroke { animation: about-card-pen-draw 2.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards; animation-delay: 0.1s; }
+@keyframes about-card-pen-draw { to { stroke-dashoffset: 0; } }
+
+.about-card-backdrop .smiley { width: 35px; height: 18px; transform: rotate(-5deg) translateY(5px); margin-left: -15px; }
+.about-card-backdrop .smile-mouth { stroke-dasharray: 40; stroke-dashoffset: 40; }
+.about-card-backdrop .smile-eye { opacity: 0; }
+.about-card-backdrop .paper-card.start-anim .smile-mouth { animation: about-card-draw-smile 0.4s ease-out forwards; animation-delay: 2.3s; }
+.about-card-backdrop .paper-card.start-anim .smile-eye { animation: about-card-fade-in 0.2s ease-out forwards; }
+.about-card-backdrop .paper-card.start-anim .smile-eye:nth-child(2) { animation-delay: 2.6s; }
+.about-card-backdrop .paper-card.start-anim .smile-eye:nth-child(3) { animation-delay: 2.8s; }
+@keyframes about-card-draw-smile { to { stroke-dashoffset: 0; } }
+@keyframes about-card-fade-in { to { opacity: 1; } }
+
+@media (max-width: 640px) {
+  .about-card-backdrop .paper-card { padding: 55px 45px; }
+}

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+
+# Vercel
+.vercel/
+
+# OS files
+.DS_Store
+._*
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Large temporary assets / exports
+UW_EVRSR802I.pdf
+door open.mp4
+kling_20260908_*.mp4
+
+# Root duplicate images (already in public/assets/)
+door frame.png
+fully open.png
+fully-closed.png
+half open.png
+interior.png
+right door.png
+whole store.png
